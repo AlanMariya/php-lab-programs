@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <form action="list.php" method="Post">
+    <table border="1">
+        <tr>
+            <td>Name</td>
+            <td><input type="text" name="txtname"></td>
+        </tr>
+        <tr>
+            <td>Designation</td>
+            <td><select name="Designation">
+                <option value="Manager">Manager</option>
+                <option value="Supervisor">Supervisor</option>
+                <option value="Clerk">Clerk</option>
+                <option value="Peon">Peon</option>
+            </select></td>
+        </tr>
+        <tr>
+            <td>Basic Allowance</td>
+            <td><input type="text" name="txtsalary"></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Calculate Salary" name="submit"></td>
+            <td><input type="reset"></td>
+        </tr>
+    </table>
+ </form> 
+</body>
+</html>
