@@ -1,24 +1,54 @@
 <?php
-mysql_connect('localhost','root');
-mysql_select_db('accounts');
-if(isset($_POST['submit']))
-{
-    $account_no=$_POST['accno'];
-    $account_name=$_POST['txtname'];
-    $bank_name=$_POST['bankname'];
-    mysql_query("insert into values('$account_no','$account_name','$bank_name')");
-    echo"<table border=1>";
-    echo"<tr><th>Account No</th>";
-    echo"<th>Account Name</th>";
-    echo"<th>Bank Name</th></tr>";
-    while($row=mysql_fetch_array(result)){
-        $account_no=$row[0];
-        $account_name=$row[1];
-        $bank_name=$row[2];
-        echo"<tr><td>$account_no</td>";
-    echo"<td>$account_name</td>";
-    echo"<td>$bank_name</td></tr>";
-    }
+// Database connection
+$servername = "localhost";
+$username = "root";
+$password = "weblab@1";
+$dbname = "account";
+
+// Create connection using mysqli
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
-echo"</table>";
+
+if(isset($_POST['submit'])) {
+    $account_no = $_POST['accountnum'];
+    $account_name = $_POST['accname'];
+    $bank = $_POST['bank'];
+
+    // Prepare and bind
+    $stmt = $conn->prepare("INSERT INTO details (account_no,account_name,bank) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $account_no, $account_name, $bank);
+
+    // Execute the statement
+    if ($stmt->execute()) {
+        echo "New record created successfully";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    // Close the statement
+    $stmt->close();
+}
+
+// Fetch data
+$result = $conn->query("SELECT * FROM details");
+
+if ($result->num_rows > 0) {
+    echo "<table border=1>";
+    echo "<tr><th>Account number</th><th>Account name</th><th>Bank</th></tr>";
+    while($row = $result->fetch_assoc()) {
+        echo "<tr><td>" . $row['account_no'] . "</td>";
+        echo "<td>" . $row['account_name'] . "</td>";
+        echo "<td>" . $row['bank'] . "</td></tr>";
+    }
+    echo "</table>";
+} else {
+    echo "0 results";
+}
+
+// Close connection
+$conn->close();
 ?>
